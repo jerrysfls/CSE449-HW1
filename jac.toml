@@ -1,0 +1,83 @@
+[project]
+name = "jac-companion"
+version = "0.1.0"
+description = "An always-on AI personal assistant: User x Interest Pool x Planned Tasks"
+kind = "fullstack"             # `jac run` (no filename) = jac start app.jac --dev, i.e. start the website
+entry-point = "app.jac"        # web / app entry; for the CLI use `jac run main.jac`
+
+# ---------- web / mobile app (jac-client) ----------
+[dependencies.npm]
+react = "^18.2.0"
+react-dom = "^18.2.0"
+react-router-dom = "^6.22.0"
+react-error-boundary = "^5.0.0"
+react-hook-form = "^7.71.0"
+zod = "^4.3.6"
+"@hookform/resolvers" = "^5.2.2"
+
+[dependencies.npm.dev]
+vite = "^6.4.1"
+"@vitejs/plugin-react" = "^4.2.1"
+typescript = "^5.3.3"
+"@types/react" = "^18.2.0"
+"@types/react-dom" = "^18.2.0"
+
+[serve]
+base_route_app = "app"          # serve the web app at /
+
+[plugins.client.app_meta_data]
+title = "Jac Companion"
+description = "An always-on AI personal assistant: User x Interest Pool x Planned Tasks"
+viewport = "width=device-width,initial-scale=1,viewport-fit=cover"
+icon = "/static/assets/favicon.png"
+apple_touch_icon = "/static/assets/icon-1024.png"
+
+# API server address for the mobile app / a separately deployed frontend (leave unset for same-origin deployments)
+# [plugins.client.api]
+# base_url = "https://your-server.example.com"
+
+[plugins.client.pwa]
+theme_color = "#4f46e5"
+background_color = "#f6f7fb"
+
+[plugins.client.pwa.manifest]
+name = "Jac Companion"
+short_name = "Companion"
+description = "An always-on AI personal assistant: User x Interest Pool x Planned Tasks"
+lang = "en-US"
+
+[plugins.client.mobile]
+app_name = "Jac Companion"
+app_id = "edu.umich.eecs449.companion"
+default_platform = "android"
+
+# Model used by the by llm() functions. Without an API key the app switches to the rule engine (offline mode).
+#   export OPENAI_API_KEY="sk-..."        -> gpt-4o-mini
+#   export ANTHROPIC_API_KEY="sk-ant-..." -> change the model to e.g. claude-sonnet-5-5
+# The COMPANION_MODEL environment variable overrides it temporarily.
+[plugins.byllm.model]
+default_model = "gpt-4o-mini"
+
+[companion]
+timezone          = "America/New_York"
+daily_brief_at    = "08:00"
+max_focus_min     = 90
+exam_lead_days    = 5
+quiz_lead_days    = 1
+buffer_ratio      = 0.2
+comfort_week_h    = 30.0      # comfortable weekly load; going over triggers a warning
+daily_cap_h       = 6.0       # max hours scheduled in one day
+high_load_day_h   = 5.0       # hours in a day that count as a "heavy day"
+
+[companion.interests]
+heat_decay_per_day    = 0.05  # daily heat decay
+done_heat_gain        = 0.15  # heat gained by finishing a task
+cancel_weight_drop    = 0.1   # weight drop caused by "lost interest"
+min_hobby_h_per_week  = 1.0   # downtime kept even in busy weeks
+skip_ask_threshold    = 3     # skips in a row before asking whether it still matters
+exam_week_hobby_ratio = 0.35  # HOBBY time ratio during exam weeks
+quiz_mastery_alpha    = 0.5   # weight of quiz scores in mastery updates
+
+[companion.sync]
+batch_interval_min = 5        # event batch interval (API mode; in the CLI each turn is one batch)
+replan_threshold   = 0.1      # weight changes above this trigger a replan

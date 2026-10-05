@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Jac Companion</string>
+    <string name="title_activity_main">Jac Companion</string>
+    <string name="package_name">edu.umich.eecs449.companion</string>
+    <string name="custom_url_scheme">edu.umich.eecs449.companion</string>
+</resources>

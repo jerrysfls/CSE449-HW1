@@ -1,0 +1,9 @@
+{
+  "appId": "edu.umich.eecs449.companion",
+  "appName": "Jac Companion",
+  "webDir": ".jac\\client\\dist",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "capacitor"
+  }
+}
